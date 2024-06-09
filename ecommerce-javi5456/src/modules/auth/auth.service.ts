@@ -32,7 +32,6 @@ export class AuthService {
   }
   async login(email, password) {
     const userByemail = await this.userRepository.login(email);
-    console.log(userByemail);
     if (!userByemail) {
       throw new HttpException(
         'user or password incorrect',
@@ -53,6 +52,6 @@ export class AuthService {
       role: userByemail.role,
     };
     const token = this.jwtService.sign(userPayload);
-    return { succes: 'user logered', token };
+    return { succes: 'user logger', token };
   }
 }
