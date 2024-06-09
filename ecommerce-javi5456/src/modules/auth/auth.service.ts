@@ -51,7 +51,7 @@ export class AuthService {
       email: userByemail.email,
       role: userByemail.role,
     };
-    const token = this.jwtService.sign(userPayload);
+    const token = await this.jwtService.sign(userPayload);
     return { succes: 'user logger', token };
   }
 }
