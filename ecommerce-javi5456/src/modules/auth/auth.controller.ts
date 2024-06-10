@@ -1,6 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { AuthDto } from './auth.dto';
+import { LoginUserDto } from './auth.dto';
 import { CreateUserDto } from '../users/users.dto';
 import { ApiTags } from '@nestjs/swagger';
 
@@ -14,7 +14,7 @@ export class authController {
     return await this.authService.createUsers(user);
   }
   @Post('signin')
-  login(@Body() credentials: AuthDto) {
+  login(@Body() credentials: LoginUserDto) {
     const { email, password } = credentials;
     return this.authService.login(email, password);
   }

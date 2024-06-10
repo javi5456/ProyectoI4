@@ -24,6 +24,10 @@ export class OrdersRepository {
     private productRepository: Repository<Product>,
   ) {}
 
+  async getAllOrders(): Promise<Order[]> {
+    const orders = this.ordersRepository.find();
+    return orders;
+  }
   async addOrder(userId: string, products: any): Promise<Order[]> {
     let total = 0;
 

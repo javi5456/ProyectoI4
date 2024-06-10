@@ -22,7 +22,7 @@ export class Order {
   })
   id: string = uuid();
 
-  @ManyToOne(() => User, (user) => user.orders)
+  @ManyToOne(() => User, (user) => user.orders, { onDelete: 'CASCADE' })
   user: User;
 
   @Column()

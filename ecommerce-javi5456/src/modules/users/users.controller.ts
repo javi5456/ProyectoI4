@@ -2,16 +2,15 @@ import {
   Controller,
   Delete,
   Get,
-  Post,
   Put,
   Param,
   Body,
-  Query,
   ParseUUIDPipe,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { Useservice } from './users.service';
-import { CreateUserDto } from './users.dto';
+import { ModifyUserDto } from './users.dto';
 import { AuthGuard } from 'src/guards/authGuard.guard';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { Roles } from 'src/decorator/roles.decorator';
@@ -28,9 +27,16 @@ export class Usercontroller {
   @ApiBearerAuth()
   @Roles(Role.Admin)
   @UseGuards(AuthGuard, RolesGuard)
-  getUsers(): Promise<User[]> {
-    return this.userService.getUsers();
+  getUsers(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 5,
+  ): Promise<User[]> {
+    if (page && limit) {
+      return this.userService.getUsers(page, limit);
+    }
+    return this.userService.getUsers(page, limit);
   }
+
   @Get(':id')
   @UseGuards(AuthGuard)
   getUsersById(@Param('id', ParseUUIDPipe) id: string): Promise<User> {
@@ -45,7 +51,7 @@ export class Usercontroller {
   @UseGuards(AuthGuard)
   modifyUsers(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() user: CreateUserDto,
+    @Body() user: ModifyUserDto,
   ): Promise<User> {
     return this.userService.modifyUSer(id, user);
   }

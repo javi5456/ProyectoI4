@@ -11,7 +11,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async createUsers(user: CreateUserDto) {
+  async createUsers(user: CreateUserDto): Promise<CreateUserDto> {
     if (user.password != user.retryPassword)
       throw new Error('password mismatch');
     const userDb = await this.userRepository.getByEmail(user.email);
@@ -25,13 +25,20 @@ export class AuthService {
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
-    return this.userRepository.createUSers({
+    const resultUser = await this.userRepository.createUSers({
       ...user,
       password: hashedPassword,
     });
+
+    return Object.fromEntries(
+      Object.entries(resultUser).filter(
+        ([key, value]) => value !== null && value !== undefined,
+      ),
+    ) as CreateUserDto;
   }
   async login(email, password) {
     const userByemail = await this.userRepository.login(email);
+    console.log(userByemail);
     if (!userByemail) {
       throw new HttpException(
         'user or password incorrect',
@@ -51,7 +58,7 @@ export class AuthService {
       email: userByemail.email,
       role: userByemail.role,
     };
-    const token = await this.jwtService.sign(userPayload);
-    return { succes: 'user logger', token };
+    const token = this.jwtService.sign(userPayload);
+    return { succes: 'user logered', token };
   }
 }
