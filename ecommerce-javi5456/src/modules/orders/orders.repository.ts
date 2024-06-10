@@ -92,6 +92,18 @@ export class OrdersRepository {
           products: true,
         },
       },
+      select: {
+        orders_details: {
+          products: {
+            id: true,
+            name:true,
+            description: true,
+            price: true,
+            imgUrl: true
+        
+          },
+        },
+      },
     });
     if (!orders) {
       throw new NotFoundException(`Order ${id} does not exist`);
