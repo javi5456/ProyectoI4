@@ -66,7 +66,7 @@ export class OrdersRepository {
       }),
     );
 
-    //await this.ordersRepository.save(order);
+  
 
     const orderDetail = new Orders_details();
     orderDetail.price = Number(total.toFixed(2));
@@ -93,14 +93,16 @@ export class OrdersRepository {
         },
       },
       select: {
+        id: true,
+        date: true, 
         orders_details: {
+          id: true,  
           products: {
             id: true,
-            name:true,
+            name: true,
             description: true,
             price: true,
-            imgUrl: true
-        
+            imgUrl: true,
           },
         },
       },
