@@ -51,9 +51,14 @@ export class ProductsRepository {
     return 'products is already';
   }
   async updateProduct(id, product) {
-    const productDb = await this.productRepository.findOneBy(id);
+    const productDb = await this.productRepository.findOne({
+      where: { id: id },
+    });
     if (!productDb) throw new NotFoundException(`Product ${id} does not exist`);
-    const updateProduct = await this.productRepository.update(id, product);
+    await this.productRepository.update(id, product);
+    const updateProduct = await this.productRepository.findOne({
+      where: { id: id },
+    });
     return updateProduct;
   }
 }
