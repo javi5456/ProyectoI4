@@ -50,9 +50,10 @@ export class ProductsRepository {
     });
     return 'products is already';
   }
-  async updateProduct(id, product): Promise<void> {
+  async updateProduct(id, product) {
     const productDb = await this.productRepository.findOneBy(id);
     if (!productDb) throw new NotFoundException(`Product ${id} does not exist`);
-    await this.productRepository.update(id, product);
+    const updateProduct = await this.productRepository.update(id, product);
+    return updateProduct;
   }
 }

@@ -41,7 +41,7 @@ export class ProductController {
   async updateProduct(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() product: Product,
-  ): Promise<void> {
+  ) {
     return await this.productService.updateProduct(id, product);
   }
 }
