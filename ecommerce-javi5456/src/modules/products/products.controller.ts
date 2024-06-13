@@ -9,12 +9,12 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
-import { UUID } from 'crypto';
 import { Product } from './Product.entity';
 import { Roles } from 'src/decorator/roles.decorator';
 import { Role } from '../auth/roles.enum';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from 'src/guards/authGuard.guard';
 
 @ApiTags('products')
 @Controller('products')
@@ -37,7 +37,7 @@ export class ProductController {
   @Put(':id')
   @ApiBearerAuth()
   @Roles(Role.Admin)
-  @UseGuards(RolesGuard)
+  @UseGuards(AuthGuard, RolesGuard)
   async updateProduct(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() product: Product,
